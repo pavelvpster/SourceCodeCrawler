@@ -1,0 +1,8 @@
+rootProject.name = 'source-code-crawler'
+include 'source-code-crawler-step0'
+include 'source-code-crawler-step1'
+include 'source-code-crawler-step2'
+include 'source-code-crawler-step3'
+include 'source-code-crawler-step4'
+include 'source-code-crawler-common'
+

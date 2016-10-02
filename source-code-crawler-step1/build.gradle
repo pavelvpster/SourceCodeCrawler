@@ -1,0 +1,18 @@
+group 'org.interactiverobotics'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'org.interactiverobotics.source_code_crawler.step1.Step1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':source-code-crawler-common')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
