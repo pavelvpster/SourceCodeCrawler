@@ -20,14 +20,13 @@
 
 package org.interactiverobotics.source_code_crawler.step3;
 
-import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.indexSuperclasses;
-import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.printIndex;
-import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.walk;
+import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.*;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Step 3.
@@ -39,17 +38,28 @@ public class Step3 {
     private static final String PATH = "source-code-crawler-step1";
 
     public static void main(String[] args) throws IOException {
-        final Map<String, List<String>> index = Collections.synchronizedMap(new HashMap<>());
+        final Map<String, List<String>> index = new HashMap<>();
+        final ReentrantLock indexLock = new ReentrantLock();
         final AtomicLong threadCounter = new AtomicLong(0);
-        walk(Paths.get(PATH), file -> new Thread(() -> {
+        walk(Paths.get(PATH), file -> {
             threadCounter.incrementAndGet();
-            try {
-                indexSuperclasses(file, index);
-            } catch (IOException e) {
-                return;
-            }
-            threadCounter.decrementAndGet();
-        }).start());
+            new Thread(() -> {
+                try {
+                    indexSuperclasses(file, (key, value) -> {
+                        indexLock.lock();
+                        try {
+                            addToIndex(key, value, index);
+                        } finally {
+                            indexLock.unlock();
+                        }
+                    });
+                } catch (IOException e) {
+                    return;
+                } finally {
+                    threadCounter.decrementAndGet();
+                }
+            }).start();
+        });
         while (threadCounter.get() > 0) {
             try {
                 Thread.sleep(10);

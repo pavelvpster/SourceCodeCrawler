@@ -20,9 +20,7 @@
 
 package org.interactiverobotics.source_code_crawler.step2;
 
-import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.indexSuperclasses;
-import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.printIndex;
-import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.walk;
+import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.*;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -40,7 +38,7 @@ public class Step2 {
         walk(Paths.get(PATH), file -> new Thread(() -> {
             try {
                 final Map<String, List<String>> index = new HashMap<>();
-                indexSuperclasses(file, index);
+                indexSuperclasses(file, (key, value) -> addToIndex(key, value, index));
                 printIndex(index);
             } catch (IOException e) { }
         }).start());
