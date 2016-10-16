@@ -25,7 +25,6 @@ import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawl
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -37,12 +36,12 @@ public class Step3 {
 
     private static final String PATH = "source-code-crawler-step1";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         final Map<String, List<String>> index = new HashMap<>();
         final ReentrantLock indexLock = new ReentrantLock();
-        final AtomicLong threadCounter = new AtomicLong(0);
+        final CountUpAndDownLatch countUpAndDownLatch = new CountUpAndDownLatch();
         walk(Paths.get(PATH), file -> {
-            threadCounter.incrementAndGet();
+            countUpAndDownLatch.countUp();
             new Thread(() -> {
                 try {
                     indexSuperclasses(file, (key, value) -> {
@@ -56,17 +55,11 @@ public class Step3 {
                 } catch (IOException e) {
                     return;
                 } finally {
-                    threadCounter.decrementAndGet();
+                    countUpAndDownLatch.countDown();
                 }
             }).start();
         });
-        while (threadCounter.get() > 0) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                break;
-            }
-        }
+        countUpAndDownLatch.await();
         printIndex(index);
     }
 }
