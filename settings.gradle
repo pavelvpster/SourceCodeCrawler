@@ -5,4 +5,5 @@ include 'source-code-crawler-step2'
 include 'source-code-crawler-step3'
 include 'source-code-crawler-step4'
 include 'source-code-crawler-common'
+include 'source-code-crawler-step5'
 
