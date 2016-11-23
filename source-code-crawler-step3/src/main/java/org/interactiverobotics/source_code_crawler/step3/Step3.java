@@ -30,7 +30,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Step 3.
  * Index is shared between threads. Main thread waits for all worker threads and prints the result.
- * Access to 'shared state' synchronization is required. Atomic variable holds number of threads running.
+ * Access to 'shared state' synchronization is required. Custom count up and down latch is used
+ * to wait for all threads complete.
  */
 public class Step3 {
 
