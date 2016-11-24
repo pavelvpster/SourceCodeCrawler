@@ -1,7 +1,7 @@
 # Source Code Crawler
 
 Source Code Crawler is a demo application to test concurrency.
-Crawler walks project directory and builds inverted index of superclasses to it's descendants.
+Crawler walks project directory and builds [inverted index](https://en.wikipedia.org/wiki/Inverted_index) of superclasses to it's descendants.
 
 It includes following modules:
 
@@ -17,9 +17,9 @@ Step4 - ```ExecutorService``` is used
 
 Step5 - map and reduce threads are separated by queues
 
-Step6 - Apache Hadoop MapReduce library is used
+Step6 - [Apache Hadoop](http://hadoop.apache.org/) MapReduce library is used
 
-Step7 - Akka library is used
+Step7 - [Akka](http://akka.io/) library is used
 
 ## Build
 
