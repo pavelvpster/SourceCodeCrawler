@@ -62,12 +62,7 @@ public class Step5 {
                 .mapToObj(i -> new Thread(() -> {
                     try {
                         while (true) {
-                            final Map<String, List<String>> index = new HashMap<>();
-                            try {
-                                indexSuperclasses(files.take(), (key, value) -> addToIndex(key, value, index));
-                            } catch (IOException e) {
-                            }
-                            results.put(index);
+                            results.put(indexSuperclasses(files.take()));
                         }
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -76,7 +71,7 @@ public class Step5 {
         countDownLatch.await();
         final Map<String, List<String>> index = new HashMap<>();
         while (fileCount.getAndDecrement() > 0) {
-            results.take().entrySet().forEach(e -> e.getValue().forEach(v -> addToIndex(e.getKey(), v, index)));
+            results.take().entrySet().forEach(e -> addToIndex(e.getKey(), e.getValue(), index));
         }
         printIndex(index);
         mappers.forEach(mapper -> mapper.interrupt());

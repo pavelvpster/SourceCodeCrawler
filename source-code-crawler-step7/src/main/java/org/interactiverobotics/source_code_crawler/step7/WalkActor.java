@@ -56,8 +56,7 @@ public class WalkActor extends UntypedActor {
             return;
         }
         if (message instanceof Map) {
-            ((Map<String, List<String>>) message).entrySet()
-                    .forEach(e -> e.getValue().forEach(v -> addToIndex(e.getKey(), v, index)));
+            ((Map<String, List<String>>) message).entrySet().forEach(e -> addToIndex(e.getKey(), e.getValue(), index));
             count--;
             if (count == 0) {
                 client.tell(index, getSelf());

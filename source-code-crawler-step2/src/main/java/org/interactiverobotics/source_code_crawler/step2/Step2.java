@@ -24,7 +24,6 @@ import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawl
 
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.*;
 
 /**
  * Step 2.
@@ -35,12 +34,6 @@ public class Step2 {
     private static final String PATH = "source-code-crawler-step1";
 
     public static void main(String[] args) throws IOException {
-        walk(Paths.get(PATH), file -> new Thread(() -> {
-            try {
-                final Map<String, List<String>> index = new HashMap<>();
-                indexSuperclasses(file, (key, value) -> addToIndex(key, value, index));
-                printIndex(index);
-            } catch (IOException e) { }
-        }).start());
+        walk(Paths.get(PATH), file -> new Thread(() -> printIndex(indexSuperclasses(file))).start());
     }
 }

@@ -41,11 +41,7 @@ public class Step4 {
     public static void main(String[] args) throws IOException {
         final ExecutorService service = Executors.newWorkStealingPool();
         final List<Future<Map<String, List<String>>>> results = new ArrayList<>();
-        walk(Paths.get(PATH), file -> results.add(service.submit(() -> {
-            final Map<String, List<String>> index = new HashMap<>();
-            indexSuperclasses(file, (key, value) -> addToIndex(key, value, index));
-            return index;
-        })));
+        walk(Paths.get(PATH), file -> results.add(service.submit(() -> indexSuperclasses(file))));
         service.shutdown();
         final Map<String, List<String>> index = results.stream()
                 .flatMap(future -> {

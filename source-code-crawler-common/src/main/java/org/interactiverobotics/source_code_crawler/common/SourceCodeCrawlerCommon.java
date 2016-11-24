@@ -50,7 +50,6 @@ public final class SourceCodeCrawlerCommon {
         });
     }
 
-    //todo: implement helper returns map instead of call mapper
     public static void indexSuperclasses(final Path file, final BiConsumer<String, String> mapper) throws IOException {
         System.out.println("Index file '" + file.getFileName() + "'");
         final String text = new String(Files.readAllBytes(file), "UTF-8");
@@ -63,11 +62,25 @@ public final class SourceCodeCrawlerCommon {
 
     private static final Pattern PATTERN = Pattern.compile("(.*)(extends |implements )(.*)( \\{)");
 
-    //todo: implement method to add multiple values
+    public static Map<String, List<String>> indexSuperclasses(final Path file) {
+        final Map<String, List<String>> index = new HashMap<>();
+        try {
+            indexSuperclasses(file, (key, value) -> addToIndex(key, value, index));
+        } catch (IOException e) {
+        }
+        return index;
+    }
+
     public static void addToIndex(final String key, final String value, final Map<String, List<String>> index) {
         final List<String> values = Optional.ofNullable(index.get(key)).orElseGet(ArrayList::new);
-        values.add(value);
-        index.put(key, values);
+        if (!values.contains(value)) {
+            values.add(value);
+            index.put(key, values);
+        }
+    }
+
+    public static void addToIndex(final String key, final List<String> values, final Map<String, List<String>> index) {
+        values.forEach(value -> addToIndex(key, value, index));
     }
 
     public static void printIndex(final Map<String, List<String>> index) {

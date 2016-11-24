@@ -25,9 +25,6 @@ import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawl
 import akka.actor.UntypedActor;
 
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Index actor. Indexes file given in message and returns result to sender.
@@ -37,9 +34,7 @@ public class IndexActor extends UntypedActor {
     @Override
     public void onReceive(Object message) throws Throwable {
         if (message instanceof String) {
-            final Map<String, List<String>> index = new HashMap<>();
-            indexSuperclasses(Paths.get((String) message), (key, value) -> addToIndex(key, value, index));
-            getSender().tell(index, getSelf());
+            getSender().tell(indexSuperclasses(Paths.get((String) message)), getSelf());
         } else {
             unhandled(message);
         }
