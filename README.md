@@ -4,13 +4,21 @@ Source Code Crawler is a demo application to test concurrency.
 Crawler walks project directory and builds inverted index of superclasses to it's descendants.
 
 It includes following modules:
+
 Step0 - counts word occurrences in file
+
 Step1 - single threaded version
+
 Step2 - each file is indexed in separate thread, each thread prints it's local index
+
 Step3 - each file is indexed in separate thread, shared index is guarded by lock
+
 Step4 - ```ExecutorService``` is used
+
 Step5 - map and reduce threads are separated by queues
+
 Step6 - Apache Hadoop MapReduce library is used
+
 Step7 - Akka library is used
 
 ## Build
