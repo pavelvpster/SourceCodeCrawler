@@ -27,6 +27,20 @@ Step7 - [Akka](http://akka.io/) library is used
 ./gradlew clean build
 ```
 
+## Step 6
+
+Download and unzip Apache Hadoop to your home directory.
+
+Add hadoop bin directory to PATH.
+
+In your home directory run following commands:
+
+```
+hdfs dfs -mkdir input
+hdfs dfs -put {PATH_TO_PROJECT}/source-code-crawler-step1/src/main/java/org/interactiverobotics/source_code_crawler/step1/dummy/*.java input
+hdfs dfs -mkdir output  
+```
+
 ## Run
 
 ```
@@ -37,7 +51,7 @@ where `source-code-crawler-step1` is step module name.
 
 ## License
 
-Copyright (C) 2016 Pavel Prokhorov (pavelvpster@gmail.com)
+Copyright (C) 2016,2017 Pavel Prokhorov (pavelvpster@gmail.com)
 
 
 This program is free software: you can redistribute it and/or modify
