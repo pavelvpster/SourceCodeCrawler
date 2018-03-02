@@ -33,12 +33,11 @@ Download and unzip Apache Hadoop to your home directory.
 
 Add hadoop bin directory to PATH.
 
-In your home directory run following commands:
+In Step6 project directory run following commands:
 
 ```
 hdfs dfs -mkdir input
 hdfs dfs -put {PATH_TO_PROJECT}/source-code-crawler-step1/src/main/java/org/interactiverobotics/source_code_crawler/step1/dummy/*.java input
-hdfs dfs -mkdir output  
 ```
 
 ## Run
@@ -50,7 +49,7 @@ hdfs dfs -mkdir output
 where `source-code-crawler-step1` is step module name.
 
 ```
-./gradlew :source-code-crawler-step6:run -PprogramArgs={INPUT},{OUTPUT}
+./gradlew :source-code-crawler-step6:run -PprogramArgs=input,output
 ```
 
 ## License
