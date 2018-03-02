@@ -49,6 +49,10 @@ hdfs dfs -mkdir output
 
 where `source-code-crawler-step1` is step module name.
 
+```
+./gradlew :source-code-crawler-step6:run -PprogramArgs={INPUT},{OUTPUT}
+```
+
 ## License
 
 Copyright (C) 2016,2017 Pavel Prokhorov (pavelvpster@gmail.com)
