@@ -8,4 +8,5 @@ include 'source-code-crawler-common'
 include 'source-code-crawler-step5'
 include 'source-code-crawler-step6'
 include 'source-code-crawler-step7'
+include 'source-code-crawler-step8'
 
