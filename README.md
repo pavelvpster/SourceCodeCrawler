@@ -21,6 +21,8 @@ Step6 - [Apache Hadoop](http://hadoop.apache.org/) MapReduce library is used
 
 Step7 - [Akka](http://akka.io/) library is used
 
+Step8 - parallel stream from Java Stream API is used
+
 ## Build
 
 ```
@@ -54,7 +56,7 @@ where `source-code-crawler-step1` is step module name.
 
 ## License
 
-Copyright (C) 2016,2017 Pavel Prokhorov (pavelvpster@gmail.com)
+Copyright (C) 2016-2018 Pavel Prokhorov (pavelvpster@gmail.com)
 
 
 This program is free software: you can redistribute it and/or modify
