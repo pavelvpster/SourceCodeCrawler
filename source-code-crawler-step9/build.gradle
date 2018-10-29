@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'org.interactiverobotics'
+version '1.0-SNAPSHOT'
+
+mainClassName = 'org.interactiverobotics.source_code_crawler.step9.Step9'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.apache.spark', name: 'spark-core_2.11', version: '2.3.2'
+    compile group: 'org.apache.spark', name: 'spark-sql_2.11', version: '2.3.2'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
