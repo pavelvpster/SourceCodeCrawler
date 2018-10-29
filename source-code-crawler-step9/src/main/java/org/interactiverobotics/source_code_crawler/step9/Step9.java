@@ -23,18 +23,14 @@ package org.interactiverobotics.source_code_crawler.step9;
 import org.apache.spark.sql.SparkSession;
 import scala.Tuple2;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.indexSuperclassesToList;
 
 /**
  * Step9.
  */
 public class Step9 {
-
-    public static final Pattern PATTERN = Pattern.compile("(class |interface )(.*)( extends | implements )(.*)( \\{)");
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -52,18 +48,9 @@ public class Step9 {
                 .read()
                 .textFile(args[0])
                 .toJavaRDD()
-                .flatMapToPair(text -> {
-                    final List<Tuple2<String, String>> classAndSubclassTuples = new ArrayList<>();
-                    final Matcher matcher = PATTERN.matcher(text);
-                    if (matcher.find()) {
-                        final String clazz = matcher.group(2);
-                        final String[] superclasses = matcher.group(4).split(",");
-                        for (final String superclass : superclasses) {
-                            classAndSubclassTuples.add(new Tuple2(superclass.trim(), clazz.trim()));
-                        }
-                    }
-                    return classAndSubclassTuples.iterator();
-                })
+                .flatMapToPair(text ->
+                    indexSuperclassesToList(text, (superclass, clazz) -> new Tuple2<>(superclass, clazz))
+                            .iterator())
                 .reduceByKey((a, b) -> String.join(" ", a, b))
                 .collectAsMap();
 

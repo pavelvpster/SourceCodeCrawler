@@ -1,7 +1,7 @@
 /*
  * IndexMapper.java
  *
- * Copyright (C) 2016 Pavel Prokhorov (pavelvpster@gmail.com)
+ * Copyright (C) 2016-2018 Pavel Prokhorov (pavelvpster@gmail.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,25 +24,20 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static org.interactiverobotics.source_code_crawler.common.SourceCodeCrawlerCommon.indexSuperclasses;
 
 /**
  * IndexMapper.
  */
 public class IndexMapper extends Mapper<Text, Text, Text, Text> {
 
-    public static final Pattern PATTERN = Pattern.compile("(class |interface )(.*)( extends | implements )(.*)( \\{)");
-
-    public void map(final Text key, final Text value, final Context context)
-            throws IOException, InterruptedException {
-        final Matcher matcher = PATTERN.matcher(value.toString());
-        if (matcher.find()) {
-            final String clazz = matcher.group(2);
-            final String[] superclasses = matcher.group(4).split(",");
-            for (final String superclass : superclasses) {
+    public void map(final Text key, final Text value, final Context context) {
+        indexSuperclasses(value.toString(), (superclass, clazz) -> {
+            try {
                 context.write(new Text(superclass.trim()), new Text(clazz.trim()));
+            } catch (final IOException | InterruptedException e) {
             }
-        }
+        });
     }
 }

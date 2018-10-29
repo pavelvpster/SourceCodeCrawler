@@ -1,7 +1,7 @@
 /*
  * SourceCodeCrawlerCommon.java
  *
- * Copyright (C) 2016 Pavel Prokhorov (pavelvpster@gmail.com)
+ * Copyright (C) 2016-2018 Pavel Prokhorov (pavelvpster@gmail.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,21 @@
 package org.interactiverobotics.source_code_crawler.common;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,19 +61,30 @@ public final class SourceCodeCrawlerCommon {
         });
     }
 
-    public static void indexSuperclasses(final Path file, final BiConsumer<String, String> mapper) throws IOException {
-        System.out.println("Index file '" + file.getFileName() + "'");
-        final String text = new String(Files.readAllBytes(file), "UTF-8");
+    private static final Pattern PATTERN = Pattern.compile("(class |interface )(.*)( extends | implements )(.*)( \\{)");
+
+    public static void indexSuperclasses(final String text, final BiConsumer<String, String> mapper) {
         final Matcher matcher = PATTERN.matcher(text);
         if (matcher.find()) {
-            final String[] superclasses = matcher.group(3).split(",");
-            Arrays.asList(superclasses).forEach(t -> mapper.accept(t.trim(), file.getFileName().toString()));
+            final String clazz = matcher.group(2).trim();
+            final String[] superclasses = matcher.group(4).split(",");
+            Arrays.asList(superclasses).forEach(superclass -> mapper.accept(superclass.trim(), clazz));
         }
     }
 
-    private static final Pattern PATTERN = Pattern.compile("(.*)(extends |implements )(.*)( \\{)");
+    public static void indexSuperclasses(final Path file, final BiConsumer<String, String> mapper) throws IOException {
+        System.out.println("Index file '" + file.getFileName() + "'");
+        final String text = new String(Files.readAllBytes(file), "UTF-8");
+        indexSuperclasses(text, mapper);
+    }
 
-    public static Map<String, List<String>> indexSuperclasses(final Path file) {
+    public static <T> List<T> indexSuperclassesToList(final String text, final BiFunction<String, String, T> mapper) {
+        final List<T> items = new ArrayList<>();
+        indexSuperclasses(text, (key, value) -> items.add(mapper.apply(key, value)));
+        return items;
+    }
+
+    public static Map<String, List<String>> indexSuperclassesToMap(final Path file) {
         final Map<String, List<String>> index = new HashMap<>();
         try {
             indexSuperclasses(file, (key, value) -> addToIndex(key, value, index));

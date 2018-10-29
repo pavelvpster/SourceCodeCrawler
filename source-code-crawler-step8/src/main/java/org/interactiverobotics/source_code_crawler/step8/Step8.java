@@ -51,7 +51,7 @@ public class Step8 {
         final List<Path> files = new ArrayList<>();
         walk(Paths.get(PATH), file -> files.add(file));
         final Callable<Map<String, List<String>>> task = () -> files.parallelStream()
-                .map(SourceCodeCrawlerCommon::indexSuperclasses)
+                .map(SourceCodeCrawlerCommon::indexSuperclassesToMap)
                 .map(Map::entrySet)
                 .flatMap(Set::stream)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
