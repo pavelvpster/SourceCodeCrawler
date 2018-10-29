@@ -23,24 +23,28 @@ Step7 - [Akka](http://akka.io/) library is used
 
 Step8 - parallel stream from Java Stream API is used
 
+Step9 - [Apache Spark](https://spark.apache.org/) is used
+
 ## Build
 
 ```
 ./gradlew clean build
 ```
 
-## Step 6
+## Step 6, Step 9
 
 Download and unzip Apache Hadoop to your home directory.
 
 Add hadoop bin directory to PATH.
 
-In Step6 project directory run following commands:
+In Step6 (or Step9) project directory run following commands:
 
 ```
 hdfs dfs -mkdir input
 hdfs dfs -put {PATH_TO_PROJECT}/source-code-crawler-step1/src/main/java/org/interactiverobotics/source_code_crawler/step1/dummy/*.java input
 ```
+
+```input``` directory has to be created in step's directory.
 
 ## Run
 
