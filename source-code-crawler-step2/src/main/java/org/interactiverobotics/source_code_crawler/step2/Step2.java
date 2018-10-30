@@ -34,6 +34,6 @@ public class Step2 {
     private static final String PATH = "source-code-crawler-step1";
 
     public static void main(String[] args) throws IOException {
-        walk(Paths.get(PATH), file -> new Thread(() -> printIndex(indexSuperclasses(file))).start());
+        walk(Paths.get(PATH), file -> new Thread(() -> printIndex(indexSuperclassesToMap(file))).start());
     }
 }

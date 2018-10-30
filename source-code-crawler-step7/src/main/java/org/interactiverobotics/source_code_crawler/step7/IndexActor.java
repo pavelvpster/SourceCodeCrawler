@@ -34,7 +34,7 @@ public class IndexActor extends UntypedActor {
     @Override
     public void onReceive(Object message) throws Throwable {
         if (message instanceof String) {
-            getSender().tell(indexSuperclasses(Paths.get((String) message)), getSelf());
+            getSender().tell(indexSuperclassesToMap(Paths.get((String) message)), getSelf());
         } else {
             unhandled(message);
         }

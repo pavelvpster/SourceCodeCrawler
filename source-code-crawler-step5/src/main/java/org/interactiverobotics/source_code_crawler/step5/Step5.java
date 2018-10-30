@@ -62,7 +62,7 @@ public class Step5 {
                 .mapToObj(i -> new Thread(() -> {
                     try {
                         while (true) {
-                            results.put(indexSuperclasses(files.take()));
+                            results.put(indexSuperclassesToMap(files.take()));
                         }
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
