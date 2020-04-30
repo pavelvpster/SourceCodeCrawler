@@ -2,11 +2,11 @@
 
 In this demo application [Apache Hadoop](http://hadoop.apache.org/) MapReduce library is used.
 
-## Hadoop in stand alone mode
+## Hadoop in stand-alone mode
 
-Make sure that Java is installed and JAVA_HOME environment variable set.
+Make sure Java installed and JAVA_HOME environment variable set.
 
-Download latest binary from this [Download](https://hadoop.apache.org/releases.html) page.
+Download the latest binary from this [Download](https://hadoop.apache.org/releases.html) page.
 
 Extract ```hadoop-*.tar.gz``` to ```/opt``` directory.
 
@@ -21,7 +21,7 @@ hdfs dfs -mkdir input
 hdfs dfs -put {PATH_TO_PROJECT}/source-code-crawler-step1/src/main/java/org/interactiverobotics/source_code_crawler/step1/dummy/*.java input
 ```
 
-Directory should contains following files:
+Directory should contain following files:
 
 + Animal.java
 + .Animal.java.crc
@@ -52,3 +52,19 @@ Directory ```output``` should be created with following files:
 ```
 hdfs dfs -text output/part-r-00000
 ```
+
+## Hadoop in cluster mode
+
+Assuming configuration from /hadoop directory applied.
+
+Go to http://SERVER:9870/explorer.html#/user/hdfs
+
+Create ```input``` directory. Upload files to the directory.
+
+Run the application:
+
+```
+./../gradlew :source-code-crawler-step6:run -PprogramArgs=hdfs://SERVER:9000/user/hdfs/input,hdfs://SERVER:9000/user/hdfs/output
+```
+
+Go to ```output``` directory and check the results.
