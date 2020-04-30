@@ -60,7 +60,7 @@ where `source-code-crawler-step1` is step module name.
 
 ## License
 
-Copyright (C) 2016-2018 Pavel Prokhorov (pavelvpster@gmail.com)
+Copyright (C) 2016-2020 Pavel Prokhorov (pavelvpster@gmail.com)
 
 
 This program is free software: you can redistribute it and/or modify
