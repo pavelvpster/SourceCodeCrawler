@@ -46,6 +46,7 @@ public class Step6 extends Configured implements Tool {
             ToolRunner.printGenericCommandUsage(System.out);
             return 2;
         }
+        System.setProperty("HADOOP_USER_NAME", "hdfs");
         final Configuration configuration = getConf();
         final Job job = Job.getInstance(configuration);
         job.setJobName("source-code-crawler");
